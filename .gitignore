@@ -1,0 +1,2 @@
+# ignore any generated data file
+*.json
