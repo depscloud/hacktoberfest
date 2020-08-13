@@ -15,7 +15,7 @@ import (
 )
 
 type LibrariesIOResult struct {
-	HomePage string `json:"homepage"`
+	HomePage      string `json:"homepage"`
 	RepositoryURL string `json:"repository_url"`
 }
 
@@ -25,8 +25,8 @@ type result struct {
 }
 
 type output struct {
-	URL string `json:"url"`
-	Score int `json:"score"`
+	URL   string `json:"url"`
+	Score int    `json:"score"`
 }
 
 func formatName(module *schema.Module) (string, string) {
@@ -52,7 +52,6 @@ func fetchRepoInfo(apiKey, platform, name string) *LibrariesIOResult {
 		log.Println(err)
 		return nil
 	}
-
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -100,7 +99,6 @@ func main() {
 			continue
 		}
 
-
 		repoURL := info.RepositoryURL
 		if repoURL == "" {
 			repoURL = info.HomePage
@@ -124,7 +122,7 @@ func main() {
 
 	for repoURL, score := range idx {
 		scores[i] = output{
-			URL: repoURL,
+			URL:   repoURL,
 			Score: score,
 		}
 		i++

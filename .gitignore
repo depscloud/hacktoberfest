@@ -1,2 +1,3 @@
 # ignore any generated data file
-*.json
+libraries.json
+repositories.json
