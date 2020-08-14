@@ -36,7 +36,7 @@ type ScoredRepository struct {
 func scoreAllModules(moduleService tracker.ModuleServiceClient, cfg *config.Config, oss *resolvers.OSS) map[string]int {
 	ctx := context.Background()
 	count := 100
-
+s
 	scores := make(map[string]int)
 	for page := int32(1); true; page++ {
 		resp, err := moduleService.List(ctx, &tracker.ListRequest{
@@ -51,7 +51,7 @@ func scoreAllModules(moduleService tracker.ModuleServiceClient, cfg *config.Conf
 
 		for _, module := range resp.GetModules() {
 			if cfg.IsCompanyModule(module) {
-				// company module
+				log.Println("filtering company module", module)
 				continue
 			}
 
@@ -59,6 +59,8 @@ func scoreAllModules(moduleService tracker.ModuleServiceClient, cfg *config.Conf
 			if url == "" {
 				continue
 			}
+
+			log.Println("updating", url)
 
 			if _, ok := scores[url]; !ok {
 				scores[url] = 0

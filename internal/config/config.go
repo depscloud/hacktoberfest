@@ -11,8 +11,7 @@ import (
 
 // Config represents the structure of a config file
 type Config struct {
-	Workers              int      `json:"workers"`
-	CompanyPatterns      []string `json:"companyPatterns"`
+	CompanyPatterns      []string `json:"company_patterns"`
 	CompanyPatternsRegex []*regexp.Regexp
 }
 
@@ -44,6 +43,7 @@ func Load(configFile string) (*Config, error) {
 		return nil, err
 	}
 
+	cfg.CompanyPatternsRegex = make([]*regexp.Regexp, len(cfg.CompanyPatterns))
 	for i, pattern := range cfg.CompanyPatterns {
 		cfg.CompanyPatternsRegex[i], err = regexp.Compile(pattern)
 		if err != nil {
