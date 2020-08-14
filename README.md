@@ -16,15 +16,14 @@ For more information on how to get involved take a look at our [project board](h
 
 Some tooling that facilitates insights into open source library usage using deps.cloud infrastructure.
 
-Since deps.cloud knows how projects relate to one another, it also know about library usage.
-This includes both internal libraries used across your company and open source libraries your company was built on.
-This project currently includes two commands:
+Since deps.cloud knows how projects relate to one another, it also able to reason about library usage.
+This includes both internal and open source libraries your company was built on.
 
-`identify-oss-libraries` uses a deps.cloud [deployment](https:/deps.cloud/docs/deploy/) to identify library use across your company.
-This script will output a file containing a sorted list of libraries and a score (the number of edges in their dependent subtree.)
-
-`translate-oss-libraries` takes the file output from the previous command and looks each library's source up using [LibrariesIO](https://libraries.io).
-In the end, this outputs a file containing a sorted list of repositories and a score (the sum of all mapped library scores.)
+`identify-contribution-candidates` is a purpose built command line tool for identifying high-impact candidates for open source contributions.
+It works by using a [deployment](https:/deps.cloud/docs/deploy/) of deps.cloud to query for open source library usage across your company.
+Each library is scored by the number of edges in it's dependent sub-tree that point to a companies module.
+When a library returns a non-0 score, we look up it's source location using [LibrariesIO](https://libraries.io).
+Finally, these results are sorted and written to a `candidates.json` file.
 
 This list of repositories file can then feed into [Indeed's Mariner](https://github.com/indeedeng/Mariner) project.
 Mariner takes this list of repositories and interrogates them for issues marked for contributions.
