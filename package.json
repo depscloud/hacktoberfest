@@ -1,7 +1,7 @@
 {
   "name": "@depscloud/hacktoberfest",
   "description": "Tooling to help support companies participating in hacktoberfest",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "repository": {
     "type": "git",
     "url": "git@github.com:depscloud/hacktoberfest.git"
