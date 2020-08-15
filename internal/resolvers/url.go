@@ -24,10 +24,12 @@ func formatName(module *schema.Module) (string, string) {
 	return "", ""
 }
 
+// URL attempts to resolve a URL for a module
 type URL struct {
 	LibrariesIO *librariesio.Client
 }
 
+// Resolve attempts to get additional information for a module
 func (u *URL) Resolve(ctx context.Context, module *schema.Module) string {
 	platform, name := formatName(module)
 	if name == "" {

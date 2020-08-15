@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	VariableBaseURL = "DEPSCLOUD_BASE_URL"
+	variableBaseURL = "DEPSCLOUD_BASE_URL"
 
-	DefaultBaseURL = "https://api.deps.cloud"
+	defaultBaseURL = "https://api.deps.cloud"
 )
 
 func translateBaseURL(baseURL string) (bool, string) {
@@ -36,9 +36,10 @@ func translateBaseURL(baseURL string) (bool, string) {
 	return tls, host
 }
 
+// Connect establishes a gRPC connection with the configured deps.cloud API
 func Connect(options ...grpc.DialOption) (*grpc.ClientConn, error) {
-	baseURL := DefaultBaseURL
-	if val := os.Getenv(VariableBaseURL); val != "" {
+	baseURL := defaultBaseURL
+	if val := os.Getenv(variableBaseURL); val != "" {
 		baseURL = val
 	}
 

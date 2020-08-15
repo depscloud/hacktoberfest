@@ -9,11 +9,13 @@ import (
 	"github.com/depscloud/hacktoberfest/internal/config"
 )
 
+// Score attempts to resolve a numeric score for a module
 type Score struct {
 	SearchService tracker.SearchServiceClient
 	Config        *config.Config
 }
 
+// Resolve attempts to get additional information for a module
 func (s *Score) Resolve(ctx context.Context, module *schema.Module) int {
 	call, err := s.SearchService.BreadthFirstSearch(ctx)
 	if err != nil {

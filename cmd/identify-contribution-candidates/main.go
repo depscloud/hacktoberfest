@@ -28,7 +28,7 @@ func getEnvOrDefault(name, def string) string {
 	return def
 }
 
-type ScoredRepository struct {
+type scoredRepository struct {
 	RepositoryURL string `json:"repository_url"`
 	Score         int    `json:"score"`
 }
@@ -36,7 +36,7 @@ type ScoredRepository struct {
 func scoreAllModules(moduleService tracker.ModuleServiceClient, cfg *config.Config, oss *resolvers.OSS) map[string]int {
 	ctx := context.Background()
 	count := 100
-s
+
 	scores := make(map[string]int)
 	for page := int32(1); true; page++ {
 		resp, err := moduleService.List(ctx, &tracker.ListRequest{
@@ -99,9 +99,9 @@ func main() {
 
 	scores := scoreAllModules(moduleService, cfg, oss)
 
-	rankedScores := make([]*ScoredRepository, 0, len(scores))
+	rankedScores := make([]*scoredRepository, 0, len(scores))
 	for url, score := range scores {
-		rankedScores = append(rankedScores, &ScoredRepository{
+		rankedScores = append(rankedScores, &scoredRepository{
 			RepositoryURL: url,
 			Score:         score,
 		})
