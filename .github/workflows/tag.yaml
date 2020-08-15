@@ -18,7 +18,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build
-        run: make build-deps deps test deploy
+        run: |
+          make build-deps deps test deploy
+          ls -1 bin/ | xargs -I{} tar vzc -f `pwd`/bin/{}.tgz -C `pwd`/bin/{} .
 
       - name: Upload Release Assets
         uses: svenstaro/upload-release-action@v1-release

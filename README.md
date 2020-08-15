@@ -28,3 +28,25 @@ Finally, these results are sorted and written to a `candidates.json` file.
 This list of repositories file can then feed into [Indeed's Mariner](https://github.com/indeedeng/Mariner) project.
 Mariner takes this list of repositories and interrogates them for issues marked for contributions.
 This issues are then used to help new contributors to open source how their contributions impact the company.
+
+### Getting Started
+
+1. Download the latest command from the [releases](https://github.com/depscloud/hacktoberfest/releases) tab.
+
+1. Create a `config.yaml` file:
+    ```yaml
+    company_patterns:
+      - ^.*depscloud.*$
+    ```
+
+2. Configure [deps.cloud](https://deps.cloud/docs/deploy/) endpoint.
+    ```bash
+    export DEPSCLOUD_BASE_URL=http://localhost:8080
+    ``` 
+
+3. Obtain an API Key from [libraries.io](https://libraries.io/)
+    ```bash
+    export LIBRARIESIO_API_KEY=123wxyz
+    ```
+
+4. Run `identify-contribution-candidates`
