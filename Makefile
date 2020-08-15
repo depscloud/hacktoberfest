@@ -23,6 +23,5 @@ install:
 	go install
 
 deploy:
-	mkdir -p bin
-	gox -os="windows darwin" -arch="amd64 386" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}" ./cmd/identify-contribution-candidates/
-	gox -os="linux" -arch="amd64 386 arm arm64" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}" ./cmd/identify-contribution-candidates/
+	gox -os="windows darwin" -arch="amd64 386" -output="bin/{{.OS}}_{{.Arch}}/{{.Dir}}" ./cmd/identify-contribution-candidates/
+	gox -os="linux" -arch="amd64 386 arm arm64" -output="bin/{{.OS}}_{{.Arch}}/{{.Dir}}" ./cmd/identify-contribution-candidates/

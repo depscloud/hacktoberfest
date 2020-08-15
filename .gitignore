@@ -1,3 +1,4 @@
 # ignore any generated data file
 candidates.json
 config.yaml
+bin/
