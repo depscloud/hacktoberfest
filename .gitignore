@@ -1,4 +1,4 @@
 # ignore any generated data file
-candidates.json
+candidate.json
 config.yaml
 bin/

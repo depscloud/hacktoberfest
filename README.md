@@ -23,7 +23,7 @@ This includes both internal and open source libraries that support up your compa
 It works by using a [deployment](https:/deps.cloud/docs/deploy/) of deps.cloud to query for open source library usage across your company.
 We score each library by the number of edges in the dependent sub-tree that point to a company's module.
 When a library returns a non-0 score, we look up it's source location using [LibrariesIO](https://libraries.io).
-Finally, the sorted results and written to a `candidates.json` file.
+Finally, the sorted results and written to a `candidate.json` file.
 
 This list of repositories file can then feed into [Indeed's Mariner](https://github.com/indeedeng/Mariner) project.
 Mariner takes this list of repositories and interrogates them for issues marked for contributions.
