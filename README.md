@@ -1,35 +1,33 @@
 # deps.cloud Hacktoberfest tooling
 
+This repository contains tooling to help support organizations participating in [Hacktoberfest].
+
+[Hacktoberfest]: https://hacktoberfest.digitalocean.com/
+
 ![GitHub](https://img.shields.io/github/license/depscloud/hacktoberfest.svg)
 ![Google Analytics](https://www.google-analytics.com/collect?v=1&cid=555&t=pageview&ec=repo&ea=open&dp=hacktoberfest&dt=hacktoberfest&tid=UA-143087272-2)
 
-[Hacktoberfest] is an event put on by [DigitalOcean] every year.
-It encourages participation in the open source community which grow every year.
-Some companies have a hard time encouraging open source contributions.
-Many work hard to tie their contributions to open source back to their company. 
+deps.cloud is a tool to help understand how projects relate to one another.
+It works by detecting dependencies defined in common [manifest files] (`pom.xml`, `package.json`, `go.mod`, etc).
+Using this information, we’re able to answer questions about project dependencies.
 
-[Hacktoberfest]: https://hacktoberfest.digitalocean.com/
-[DigitalOcean]: https://www.digitalocean.com/
+* What versions of _k8s.io/client-go_ do we depend on?
+* Which projects use _eslint_ as a non-dev dependency?
+* What open source libraries do we use the most?
 
-[deps.cloud] is a tool built to help companies understand how projects relate to one another.
-It does this by detecting dependencies defined in common manifest files.
-Using this information, we’re able to construct a dependency graph.
-As a result, it's able to reason about library usage at a company.
-This includes both internal and open source libraries that support up your company.
+[manifest files]: https://deps.cloud/docs/concepts/manifests/
 
-[deps.cloud]: https://deps.cloud
+## Prerequisites
+
+In order to use this repository, you will need a [deployment] of deps.cloud running.
+
+[deployment]: https:/deps.cloud/docs/deploy/
 
 ## Identifying contribution candidates
 
-`identify-contribution-candidates` identifies candidates for open source contributions.
-It works by querying a [deployment](https:/deps.cloud/docs/deploy/) of deps.cloud.
-Using the information in the graph, we score each library by the number of edges in the dependent sub-tree.
-These edges must point to a company owned module to be considered as part of the score.
-
-When a library returns a non-0 score,we look up it's source information using [LibrariesIO](https://libraries.io).
-Finally, we write the sorted results to a `candidate.json` file.
-
-**Getting Started**
+`identify-contribution-candidates` looks for open source library use across your company.
+It scores each project by how often it's used in your projects.
+We then look up its source using [LibrariesIO](https://libraries.io).
 
 1. Download the latest command from the [releases](https://github.com/depscloud/hacktoberfest/releases) tab.
 
@@ -52,10 +50,8 @@ Finally, we write the sorted results to a `candidate.json` file.
 
 4. Run `identify-contribution-candidates`
 
-Once complete, you'll be left with a file that contains a JSON array.
-Each entry will have two fields: a source url and a score.
-The source URL is the location of the source code.
-The score is the sum of all scores for libraries produced by that source URL.
+That's it!
+At the end of it's run, it writes out a `candidate.json` file.
 
 ```json
 [
