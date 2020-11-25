@@ -1,0 +1,2 @@
+company_patterns:
+  - ^.*depscloud.*$

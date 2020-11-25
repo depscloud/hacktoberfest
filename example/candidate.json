@@ -1,0 +1,254 @@
+[
+  {
+    "repository_url": "https://github.com/grpc-ecosystem/grpc-gateway",
+    "score": 4
+  },
+  {
+    "repository_url": "https://github.com/davidji99/simpleresty",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/expressjs/express",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/grpc/grpc-node",
+    "score": 7
+  },
+  {
+    "repository_url": "https://github.com/postcss/postcss-cli",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/davidji99/bitbucket-go",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/mattn/go-sqlite3",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/rs/cors",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/nytlabs/gojee",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/urfave/cli",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/grpc/grpc-go",
+    "score": 5
+  },
+  {
+    "repository_url": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "score": 5
+  },
+  {
+    "repository_url": "https://github.com/xanzy/go-gitlab",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/eslint/eslint",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/golang/time",
+    "score": 1
+  },
+  {
+    "repository_url": "https://gopkg.in/src-d/go-git.v4",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/sirupsen/logrus",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/pkg/errors",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/siimon/prom-client",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/go-gorm/gorm",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/golang/crypto",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/kulshekhar/ts-jest",
+    "score": 3
+  },
+  {
+    "repository_url": "https://github.com/grpc-ecosystem/go-grpc-prometheus",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/BinaryMuse/toml-node",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/jonboulle/clockwork",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/golang/protobuf",
+    "score": 4
+  },
+  {
+    "repository_url": "https://github.com/go-gorm/postgres",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/go-sql-driver/mysql",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/spf13/cobra",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/spf13/pflag",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/isaacs/minimatch",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/nodeca/js-yaml",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/golang/sys",
+    "score": 5
+  },
+  {
+    "repository_url": "https://github.com/protocolbuffers/protobuf-go",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/typescript-eslint/typescript-eslint",
+    "score": 2
+  },
+  {
+    "repository_url": "https://github.com/postcss/autoprefixer",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/ghodss/yaml",
+    "score": 2
+  },
+  {
+    "repository_url": "https://github.com/stretchr/testify",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/gogo/protobuf",
+    "score": 4
+  },
+  {
+    "repository_url": "https://github.com/joao-fontenele/express-prometheus-middleware",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/facebook/jest",
+    "score": 3
+  },
+  {
+    "repository_url": "https://github.com/mattallty/Caporal.js",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/go-gorm/sqlite",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/go-gorm/mysql",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/Microsoft/TypeScript",
+    "score": 3
+  },
+  {
+    "repository_url": "https://github.com/cheeriojs/cheerio",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/golang/text",
+    "score": 4
+  },
+  {
+    "repository_url": "https://github.com/prometheus/procfs",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/jmoiron/sqlx",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/slok/go-http-metrics",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/jackc/pgx",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/googleapis/go-genproto",
+    "score": 3
+  },
+  {
+    "repository_url": "https://github.com/prometheus/client_golang",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/log4js-node/log4js-node",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/grpc-ecosystem/go-grpc-middleware",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/golang/oauth2",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/prometheus/common",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/hashicorp/go-retryablehttp",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/go-resty/resty",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/sergi/go-diff",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/golang/net",
+    "score": 2
+  },
+  {
+    "repository_url": "https://github.com/mjpitz/go-gracefully",
+    "score": 1
+  },
+  {
+    "repository_url": "https://github.com/ninetwozero/gradle-to-js",
+    "score": 1
+  }
+]
