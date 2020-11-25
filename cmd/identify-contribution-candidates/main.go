@@ -3,16 +3,17 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
-	"sort"
+	"time"
 
+	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/hacktoberfest/internal/config"
 	"github.com/depscloud/hacktoberfest/internal/depscloud"
 	"github.com/depscloud/hacktoberfest/internal/librariesio"
-	"github.com/depscloud/hacktoberfest/internal/resolvers"
 )
 
 func fatal(err error) {
@@ -33,44 +34,37 @@ type scoredRepository struct {
 	Score         int    `json:"score"`
 }
 
-func scoreAllModules(moduleService tracker.ModuleServiceClient, cfg *config.Config, oss *resolvers.OSS) map[string]int {
-	ctx := context.Background()
-	count := 100
+func key(module *schema.Module) string {
+	if n := module.GetName(); n != "" {
+		return fmt.Sprintf("%s/%s", module.GetLanguage(), n)
+	}
+	return fmt.Sprintf("%s/%s--%s", module.GetOrganization(), module.GetModule())
+}
 
-	scores := make(map[string]int)
-	for page := int32(1); true; page++ {
-		resp, err := moduleService.List(ctx, &tracker.ListRequest{
-			Page:  page,
-			Count: int32(count),
-		})
+func scoreTree(root string, edges map[string]map[string]bool, counts map[string]int) int {
+	seen := map[string]bool{root: true}
+	sum := counts[root]
+	tier := []string{root}
 
-		if err != nil {
-			log.Println(err)
-			break
+	for length := len(tier); length > 0; length = len(tier) {
+		next := make([]string, 0)
+
+		for i := 0; i < length; i++ {
+			current := tier[i]
+
+			for edge := range edges[current] {
+				if !seen[edge] {
+					seen[edge] = true
+					sum += counts[edge]
+					next = append(next, edge)
+				}
+			}
 		}
 
-		for _, module := range resp.GetModules() {
-			if cfg.IsCompanyModule(module) {
-				log.Println("filtering company module", module)
-				continue
-			}
-
-			score, url := oss.Resolve(ctx, module)
-			if url == "" {
-				continue
-			}
-
-			log.Println("updating", url)
-
-			if _, ok := scores[url]; !ok {
-				scores[url] = 0
-			}
-
-			scores[url] += score
-		}
+		tier = next
 	}
 
-	return scores
+	return sum
 }
 
 func main() {
@@ -85,33 +79,114 @@ func main() {
 	fatal(err)
 	defer conn.Close()
 
-	moduleService := tracker.NewModuleServiceClient(conn)
+	librariesioClient := librariesio.NewClient(apiKeyLibrariesIO)
 
-	oss := &resolvers.OSS{
-		Scorer: &resolvers.Score{
-			SearchService: tracker.NewSearchServiceClient(conn),
-			Config:        cfg,
-		},
-		Lookup: &resolvers.URL{
-			LibrariesIO: librariesio.NewClient(apiKeyLibrariesIO),
-		},
+	moduleService := tracker.NewModuleServiceClient(conn)
+	dependencyService := tracker.NewDependencyServiceClient(conn)
+
+	ctx := context.Background()
+	count := 100
+
+	index := make(map[string]*schema.Module)
+	counts := make(map[string]int)
+	edges := make(map[string]map[string]bool)
+
+	for page := int32(1); true; page++ {
+		resp, err := moduleService.List(ctx, &tracker.ListRequest{
+			Page:  page,
+			Count: int32(count),
+		})
+
+		if err != nil {
+			log.Println(err)
+			break
+		}
+
+		modules := resp.GetModules()
+		for _, module := range modules {
+			k1 := key(module)
+			index[k1] = module
+
+			if cfg.IsCompanyModule(module) {
+				log.Println("filtering", module)
+				continue
+			}
+
+			log.Println("processing", module)
+
+			resp, err := dependencyService.ListDependents(ctx, &tracker.DependencyRequest{
+				Language:     module.GetLanguage(),
+				Organization: module.GetOrganization(),
+				Module:       module.GetModule(),
+				Name:         module.GetName(),
+			})
+			if err != nil {
+				log.Println("error", err)
+				continue
+			}
+
+			dependents := resp.GetDependents()
+			edges[k1] = make(map[string]bool)
+			for _, dependent := range dependents {
+				dependentModule := dependent.GetModule()
+				k2 := key(dependentModule)
+
+				if cfg.IsCompanyModule(dependentModule) {
+					counts[k1]++
+				} else {
+					edges[k1][k2] = true
+				}
+			}
+		}
+
+		if len(modules) < count {
+			break
+		}
 	}
 
-	scores := scoreAllModules(moduleService, cfg, oss)
+	scores := make(map[string]int)
+	for key := range edges {
+		module := index[key]
+		log.Println("computing subtree", module)
 
-	rankedScores := make([]*scoredRepository, 0, len(scores))
-	for url, score := range scores {
-		rankedScores = append(rankedScores, &scoredRepository{
+		score := scoreTree(key, edges, counts)
+
+		if score == 0 {
+			continue
+		}
+
+		scores[key] = score
+	}
+
+	resultsIndex := make(map[string]int)
+
+	// query libraries io @ 1qps
+	for key, score := range scores {
+		module := index[key]
+
+		log.Println("lookup", module)
+
+		result, err := librariesioClient.LookUp(module.GetLanguage(), module.GetName())
+		if err != nil {
+			log.Println("error", err)
+		} else if result.RepositoryURL != "" {
+			resultsIndex[result.RepositoryURL] += score
+		}
+
+		time.Sleep(time.Second)
+	}
+
+	results := make([]*scoredRepository, 0, len(scores))
+	for url, score := range resultsIndex {
+		log.Println("sum", url, score)
+
+		results = append(results, &scoredRepository{
 			RepositoryURL: url,
 			Score:         score,
 		})
 	}
 
-	sort.SliceStable(rankedScores, func(i, j int) bool {
-		return rankedScores[i].Score >= rankedScores[j].Score
-	})
-
-	data, err := json.MarshalIndent(rankedScores, "", "  ")
+	data, err := json.MarshalIndent(results, "", "  ")
 	fatal(err)
 
 	err = ioutil.WriteFile(outputFile, data, 0644)

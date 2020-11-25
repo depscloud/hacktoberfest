@@ -25,6 +25,10 @@ func (cfg *Config) IsCompanyModule(module *schema.Module) bool {
 		if excludePatterns.MatchString(module.GetModule()) {
 			return true
 		}
+
+		if excludePatterns.MatchString(module.GetName()) {
+			return true
+		}
 	}
 
 	return false
