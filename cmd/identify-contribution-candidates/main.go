@@ -4,16 +4,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
-	"time"
-
 	"github.com/depscloud/api/v1alpha/schema"
 	"github.com/depscloud/api/v1alpha/tracker"
 	"github.com/depscloud/hacktoberfest/internal/config"
 	"github.com/depscloud/hacktoberfest/internal/depscloud"
 	"github.com/depscloud/hacktoberfest/internal/librariesio"
+	"io/ioutil"
+	"log"
+	"os"
+	"time"
 )
 
 func fatal(err error) {
@@ -68,6 +67,19 @@ func scoreTree(root string, edges map[string]map[string]bool, counts map[string]
 	return sum
 }
 
+func languageToPlatform(language string) string {
+	switch language {
+	case "java":
+		return "maven"
+	case "node":
+		return "npm"
+	case "php":
+		return "packagist"
+	default:
+		return language
+	}
+}
+
 func main() {
 	configFile := getEnvOrDefault("CONFIG_FILE", "config.yaml")
 	apiKeyLibrariesIO := getEnvOrDefault("LIBRARIESIO_API_KEY", "")
@@ -108,11 +120,7 @@ func main() {
 			k1 := key(module)
 			index[k1] = module
 
-			if cfg.IsCompanyModule(module) {
-				log.Println("filtering", module)
-				continue
-			}
-
+			// process all modules
 			log.Println("processing", module)
 
 			resp, err := dependencyService.ListDependents(ctx, &tracker.DependencyRequest{
@@ -134,9 +142,8 @@ func main() {
 
 				if cfg.IsCompanyModule(dependentModule) {
 					counts[k1]++
-				} else {
-					edges[k1][k2] = true
 				}
+				edges[k1][k2] = true
 			}
 		}
 
@@ -148,6 +155,12 @@ func main() {
 	scores := make(map[string]int)
 	for key := range edges {
 		module := index[key]
+
+		// don't score company modules
+		if cfg.IsCompanyModule(module) {
+			continue
+		}
+
 		log.Println("computing subtree", module)
 
 		score := scoreTree(key, edges, counts)
@@ -167,11 +180,17 @@ func main() {
 
 		log.Println("lookup", module)
 
-		result, err := librariesioClient.LookUp(module.GetLanguage(), module.GetName())
-		if err != nil {
-			log.Println("error", err)
-		} else if result.RepositoryURL != "" {
-			resultsIndex[result.RepositoryURL] += score
+		platform := languageToPlatform(module.GetLanguage())
+		for attempt := 0; attempt < 5; attempt++ {
+			result, err := librariesioClient.LookUp(platform, module.GetName())
+			if err != nil {
+				log.Println("retrying", err)
+				time.Sleep(5 * time.Second)
+				continue
+			} else if result.RepositoryURL != "" {
+				resultsIndex[result.RepositoryURL] += score
+				break
+			}
 		}
 
 		time.Sleep(time.Second)
