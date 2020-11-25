@@ -35,10 +35,11 @@ type scoredRepository struct {
 }
 
 func key(module *schema.Module) string {
+	lang := module.GetLanguage()
 	if n := module.GetName(); n != "" {
-		return fmt.Sprintf("%s/%s", module.GetLanguage(), n)
+		return fmt.Sprintf("%s/%s", lang, n)
 	}
-	return fmt.Sprintf("%s/%s--%s", module.GetOrganization(), module.GetModule())
+	return fmt.Sprintf("%s/%s--%s", lang, module.GetOrganization(), module.GetModule())
 }
 
 func scoreTree(root string, edges map[string]map[string]bool, counts map[string]int) int {
