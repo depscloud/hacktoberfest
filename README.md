@@ -1,4 +1,4 @@
-# deps.cloud Hacktoberfest tooling
+# deps.cloud Hacktoberfest tooling 2021
 
 This repository contains tooling to help support organizations participating in [Hacktoberfest].
 
